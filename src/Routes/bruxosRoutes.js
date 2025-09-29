@@ -1,11 +1,12 @@
 import express from "express";
-import {createBruxo, getAllbruxos, getBruxosByid,deleteBruxo} from "../Controllers/bruxosControllers.js"
+import {createBruxo, getAllbruxos, getBruxosByid,deleteBruxo, updatebruxos} from "../Controllers/bruxosControllers.js"
 
 const router = express.Router();
 
 router.get("/", getAllbruxos);
 router.get("/:id", getBruxosByid);
 router.post("/", createBruxo);
-router.delete("/:id",deleteBruxo)
+router.delete("/:id",deleteBruxo);
+router.put("/:id", updatebruxos);
 
 export default router

@@ -65,12 +65,7 @@ const createBruxo = (req, res) =>{
 }
 const deleteBruxo = (req,res) =>{
     const id = parseInt(req.params.id)
-    if (isNaN(id)){
-        return res.status(400).json({
-            sucess:false,
-            message:"O id deve ser valido"
-        })
-    }
+
     const bruxoPararemover = bruxos.find(b => b.id === id);
     if(!bruxoPararemover){
         return res.status(404).json({
@@ -80,16 +75,23 @@ const deleteBruxo = (req,res) =>{
     }
     const bruxosFiltrados = bruxos.filter(bruxo => bruxo.id !== id)
     bruxos.splice(0, bruxos.length, ...bruxosFiltrados)
-    return res.status(200).json({
-            sucess:true,
-            message: `O bruxo ${id} foi removido com sucesso`
-        })
+    const{admin}= req.body
+    if(admin == false){
+        return res.status(403).json({
+            sucess: false,
+            message: "Somente o Diretor pode executar essa magia!",
+          });
+        }else{
+            return res.status(200).json({
+                sucess:true,
+                message: `O bruxo ${id} foi removido com sucesso`
+            })
+        }
 }
 const updatebruxos = (req, res) => {
     const id = parseInt(req.params.id)
-    const {nome, diretor, ano,  genero, atoresPrincipais, duracao, classificacao, avaliacaoIMDB,estudio} =req.body
+    const {nome, casa, anoNascimento,  especialidade, atoresPrincipais, nivelMagia} =req.body
     const idParaEditar = id;
-    //garante que o id é um número//
     if(isNaN(idParaEditar)){
         return res.status(400).json({
             sucess:false,
@@ -100,20 +102,17 @@ const updatebruxos = (req, res) => {
     if(!bruxoExiste){
         return res.status(404).json({
             success: false,
-            message: `Nenhum bruxo com o id: ${id} não foi encontrada`
+            message: `Não é possível reparar o que não existe!`
         })
     }
 const bruxosAtualizados = bruxos.map(bruxo=> bruxo.id === idParaEditar?{
     ...bruxo,
     ...(nome && {nome}),
-    ...(diretor && {diretor}),
-    ...(ano && {ano}),
-    ...(genero && {genero}),
+    ...(casa && {casa}),
+    ...(anoNascimento && {anoNascimento}),
+    ...(especialidade && {especialidade}),
     ...(atoresPrincipais && {atoresPrincipais}),
-    ...(duracao && {duracao}),
-    ...(classificacao && {classificacao}),
-    ...(avaliacaoIMDB && {avaliacaoIMDB}),
-    ...(estudio && {estudio}),
+    ...(nivelMagia && {nivelMagia}),
 }
 :bruxo
 );
@@ -125,4 +124,4 @@ res.status(200).json({
     bruxo: bruxoEditado
 })
 }
-export {getAllbruxos,getBruxosByid, createBruxo,deleteBruxo}
+export {getAllbruxos,getBruxosByid, createBruxo,deleteBruxo,updatebruxos}
