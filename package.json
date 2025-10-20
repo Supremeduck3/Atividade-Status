@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"nodemon server.js"
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "Pedro Otávio",
@@ -14,6 +14,7 @@
   "dependencies": {
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "node": "^25.0.0",
     "nodemon": "^3.1.10"
   }
 }
